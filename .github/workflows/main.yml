@@ -1,10 +1,19 @@
 name: Ubuntu
 on:
-  watch:
-    types: started
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'releases/*'
+
 jobs:
-  Ubuntu:
+  test:
     runs-on: ubuntu-latest
     steps:
-    - name: SSH connection to Actions
-      uses: P3TERX/debugger-action@master
+    - uses: actions/checkout@v1
+
+    - run: npm ci
+    - run: npm test
+    - uses: ./
+      with:
+        milliseconds: 1000
